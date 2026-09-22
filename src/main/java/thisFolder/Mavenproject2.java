@@ -8,6 +8,20 @@ package thisFolder;
  *
  * @author Shayne
  */
+
+
+abstract class Tour {
+    
+}
+
+class Customer {
+    
+}
+
+class Booking {
+    
+}
+
 public class Mavenproject2 {
 
     public static void main(String[] args) {
