@@ -9,9 +9,8 @@ class Booking {
     private String customerID;
     private String tourID;
     
-    //Value have different meanings depending on HP/GT
-    private int value1;
-    private int value2;
+    private int totalPeople;
+    private int singleRequest;
    
     public Booking(String bookingID, String customerID,
                    String tourID, int value1, int value2) {
@@ -19,43 +18,25 @@ class Booking {
         this.bookingID = bookingID;
         this.customerID = customerID;
         this.tourID = tourID;
-        this.value1 = value1;
-        this.value2 = value2;
+        
+        if (tourID.charAt(0) == 'G') {
+            // GT: value1 = total people
+            //     value2 = single requests
+            this.totalPeople = value1;
+            this.singleRequest = value2;
+        } else {
+            // HP: value1 = singles
+            //     value2 = doubles (2 people)
+            this.totalPeople = value1 + (value2 * 2);
+            this.singleRequest = value1;
+        }
     }
     
     public String getBookingID() {return bookingID;}
     public String getCustomerID() {return customerID;}
     public String getTourID() {return tourID;}
-    public int getValue1() {return value1;}
-    public int getValue2() {return value2;}
+    public int getTotalPeople() {return totalPeople;}
+    public int getSingleRequest() {return singleRequest;}
     
-    //Holiday --> value1 is single room, value2 is double room (2 people)
-    //Group --> value1 is total people
-    public int getTotalPersons() {
-        if (tourID.charAt(0) == 'G') {
-            return value1;
-        } else {
-            return value1 + (value2 * 2);
-        }
-    }
-
-    //Holiday --> value1 is single room
-    //Group --> value2 is single room requests
-    public int getSingleRooms(){
-        if (tourID.charAt(0) == 'H') {
-            return value1;
-        } else {
-            return value2;
-        }
-    }
-    
-    //Holiday --> value2 is double room
-    public int getDoubleRooms(){
-        if(tourID.charAt(0) == 'H'){
-            return value2;
-        } else {
-            int remaining = getTotalPersons() - getSingleRooms();
-            return remaining / 2;
-        }
-    } 
 }
+
