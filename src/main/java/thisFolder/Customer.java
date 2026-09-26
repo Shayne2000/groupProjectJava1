@@ -13,9 +13,24 @@ package thisFolder;
 
 
 public class Customer {
-
-    public static void main(String[] args) {
-        System.out.println("Hello World!");
-        System.out.println("test");
+    
+    private final String ID;
+    private int cashback;
+    
+    Customer(String id) {
+        ID = id;
+        cashback = 0;
+    }
+    
+    public int getCashback () {
+        return cashback;
+    }
+    
+    public void setCashback (int newCashBack) {
+        cashback = newCashBack;
+    }
+    
+    public String getID () {
+        return ID;
     }
 }
