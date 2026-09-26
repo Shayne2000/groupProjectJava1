@@ -1,16 +1,15 @@
 package thisFolder;
 
-import java.util.*;
-import java.io.*;
 /**
  *
  * @author korkor
  */
-abstract class Booking {
+class Booking {
     private String bookingID;
     private String customerID;
     private String tourID;
-    //value will be different depends on HP/GT
+    
+    //Value have different meanings depending on HP/GT
     private int value1;
     private int value2;
    
@@ -30,59 +29,33 @@ abstract class Booking {
     public int getValue1() {return value1;}
     public int getValue2() {return value2;}
     
-    public abstract int getTotalPersons();
-    public abstract int getSingleRooms();
-    public abstract int getDoubleRooms();
-
-}
-
-class HolidayBooking extends Booking {
-    public HolidayBooking (String bookingID, String customerID,
-                          String tourID, int value1, int value2) {
-        super(bookingID, customerID, tourID, value1, value2);
-        
-    }
-    
-    @Override
-    //value1 is single room, value2 is double room (2 people)
+    //Holiday --> value1 is single room, value2 is double room (2 people)
+    //Group --> value1 is total people
     public int getTotalPersons() {
-        return getValue1() + (getValue2() * 2);
+        if (tourID.charAt(0) == 'G') {
+            return value1;
+        } else {
+            return value1 + (value2 * 2);
+        }
     }
-    
-    @Override
+
+    //Holiday --> value1 is single room
+    //Group --> value2 is single room requests
     public int getSingleRooms(){
-        return getValue1();
+        if (tourID.charAt(0) == 'H') {
+            return value1;
+        } else {
+            return value2;
+        }
     }
     
-    @Override
+    //Holiday --> value2 is double room
     public int getDoubleRooms(){
-        return getValue2();
-    }
+        if(tourID.charAt(0) == 'H'){
+            return value2;
+        }else{
+            int remaining = getTotalPersons() - getSingleRooms();
+            return remaining / 2;
+        }
+    } 
 }
-
-class GroupBooking extends Booking {
-
-    public GroupBooking(String bookingID, String customerID, String tourID
-                        , int value1, int value2) {
-        super(bookingID, customerID, tourID, value1, value2);
-    }
-
-    @Override
-    //value1 is persons
-    public int getTotalPersons() {
-        return getValue1();
-    }
-
-    @Override
-    //value2 is single requests
-    public int getSingleRooms() {
-        return getValue2();
-    }
-
-    @Override
-    public int getDoubleRooms() {
-        int remaining = getTotalPersons() - getSingleRooms();
-        return remaining / 2;
-    }
-}
-
