@@ -4,7 +4,7 @@
  */
 package thisFolder;
 
-import Project1.Tour;
+import thisFolder.Tour;
 
 /**
  *
