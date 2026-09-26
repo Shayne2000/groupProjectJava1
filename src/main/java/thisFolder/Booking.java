@@ -34,7 +34,7 @@ class Booking {
     public int getTotalPersons() {
         if (tourID.charAt(0) == 'G') {
             return value1;
-        } else if (tourID.charAt(0) == 'H') {
+        } else {
             return value1 + (value2 * 2);
         }
     }
@@ -44,7 +44,7 @@ class Booking {
     public int getSingleRooms(){
         if (tourID.charAt(0) == 'H') {
             return value1;
-        } else if (tourID.charAt(0) == 'G') {
+        } else {
             return value2;
         }
     }
@@ -53,7 +53,7 @@ class Booking {
     public int getDoubleRooms(){
         if(tourID.charAt(0) == 'H'){
             return value2;
-        } else if (tourID.charAt(0) == 'G') {
+        } else {
             int remaining = getTotalPersons() - getSingleRooms();
             return remaining / 2;
         }
