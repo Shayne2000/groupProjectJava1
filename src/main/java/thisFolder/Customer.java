@@ -15,14 +15,14 @@ package thisFolder;
 public class Customer {
     
     private final String ID;
-    private int cashback;
+    private float cashback;
     
     Customer(String id) {
         ID = id;
         cashback = 0;
     }
     
-    public int getCashback () {
+    public float getCashback () {
         return cashback;
     }
     
@@ -32,5 +32,14 @@ public class Customer {
     
     public String getID () {
         return ID;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (ID.equals(((Customer)obj).getID())){
+            return true;
+        }else{
+            return false;
+        }
     }
 }

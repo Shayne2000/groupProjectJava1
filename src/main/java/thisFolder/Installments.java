@@ -5,13 +5,9 @@ import java.io.FileNotFoundException;
 import java.util.*;
 
 public class Installments {
-    private List<Double> percentages;
+    private static List<Double> percentages = new ArrayList<>();
 
-    public Installments() {
-        this.percentages = new ArrayList<>();
-    }
-
-    public void readFromFile(String filePath) throws FileNotFoundException {
+    public static void readFromFile(String filePath) throws FileNotFoundException {
         File file = new File(filePath);
         Scanner scanner = new Scanner(file);
 
@@ -47,15 +43,15 @@ public class Installments {
         System.out.printf("    (%d)  remaining total\n\n", totalInstallments);
     }
 
-    public int getTotalInstallments() {
+    public static int getTotalInstallments() {
         return percentages.size() + 1;
     }
 
-    public List<Double> getPercentages() {
+    public static List<Double> getPercentages() {
         return percentages;
     }
 
-    public double processAndPrintInstallments(double totalPayment, double currentCashback) {
+    public static double processAndPrintInstallments(double totalPayment, double currentCashback) {
         int totalInstallments = getTotalInstallments();
         double sumPreviousInstallments = 0.0;
 
