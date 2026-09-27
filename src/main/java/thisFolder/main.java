@@ -182,6 +182,9 @@ public class main {
             
             bookings.add(booking);
             booking.setTourObject(tour);
+            tour.addHistory(value[0]);
+            tour.addTotalRevenue(tour.calculatePayment(booking.getTotalPeople(), booking.getSingleRequest()));
+            tour.addTotalTravelers(booking.getTotalPeople());
             
 //            System.out.println();
         }
@@ -193,10 +196,15 @@ public class main {
         }
         
         
-        System.out.println("===== Group-Tour Sumary =====");
-//        for (GroupTour GT : GTs){
-//            System.out.printf("%s     total travelers =%5d    total revenur =%10.2f    bookings = %s", GT.getCode(), );
-//        }
+        System.out.println("\n===== Group-Tour Sumary =====");
+        for (GroupTour GT : GTs){
+            System.out.printf("%s     total travelers =%5d    total revenue =%10.2f    bookings = %s\n", GT.getCode(),GT.getTotalTravelers(),GT.getTotalRevenue(),GT.getHistory() );
+        }
+        
+        System.out.println("\n===== Holiday-Package Sumary =====");
+        for (HolidayPackage HP : HPs){
+            System.out.printf("%s     total travelers =%5d    total revenue =%10.2f    bookings = %s\n", HP.getCode(),HP.getTotalTravelers(),HP.getTotalRevenue(),HP.getHistory() );
+        }
     }
     
     private static Scanner readFile(String expectedName){
