@@ -19,9 +19,23 @@ public class HolidayPackage extends Tour {
         this.singleRate = singleRate;
         this.doubleRate = doubleRate;
     }
+    
+    HolidayPackage(String code) {
+        super(code);
+        this.singleRate = -1;
+        this.doubleRate = -1;
+    }
 
     @Override
     public double calculatePayment(int singles, int doubles) {
         return singles * singleRate + 2.0 * doubles * doubleRate;
+    }
+    
+    public double getSingleRate () {
+        return singleRate;
+    }
+    
+    public double getDoubleRate () {
+        return doubleRate;
     }
 }
