@@ -8,6 +8,7 @@ package thisFolder;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
@@ -18,9 +19,14 @@ import java.util.regex.Pattern;
 
 class helper {
     public static String[] cleanArray (String array[],int start,int size){
-        for (int i = start ; i < size ; i ++){
-            array[i] = array[i].trim();
+        try {
+            for (int i = start ; i < size ; i ++){
+                array[i] = array[i].trim();
+            }
+        }catch(ArrayIndexOutOfBoundsException e){
+            
         }
+            
         return array;
     }
     public static int INT (String s) {
@@ -28,6 +34,20 @@ class helper {
         
     }
 }
+
+class InvalidInputException extends RuntimeException {
+    
+    public InvalidInputException (int target, int column) {
+        String dummy = "For amount in col" + column + ": \"" + target + "\"";
+        super(dummy);
+    }
+    
+    public InvalidInputException (String input) {
+        String dummy = "For tour code: \"" + input + "\"";
+        super(dummy);
+    }
+}
+
 
 
 public class main {
@@ -61,7 +81,7 @@ public class main {
         System.out.println("Code   15-20 persons   21-30 persons   >=31 persons   Single Supplement");
         System.out.println("-----------------------------------------------------------------------");
         for (GroupTour GT : GTs) {
-//            System.out.printf("%s%16d%16d%16d%16d\n", GT.getCode());
+            System.out.printf("%s%,16.0f%,16.0f%,15.0f%,16.0f\n",GT.getCode(), GT.getRate15To20(),GT.getRate21To30(),GT.getRate31Plus(),GT.getSingleSupplement());
         }
         
         System.out.println();
@@ -70,7 +90,7 @@ public class main {
         System.out.println("Code   1 person(Single)   2 persons(Double)");
         System.out.println("-------------------------------------------");
         for (HolidayPackage HP : HPs) {
-//            System.out.printf("%s%16d%18d");
+            System.out.printf("%s%,16.0f%,18.0f\n", HP.getCode(), HP.getSingleRate(), HP.getDoubleRate());
         }
         
         System.out.println();
@@ -83,30 +103,50 @@ public class main {
             parts = helper.cleanArray(parts, 0, 2);
             
             double pct = Double.parseDouble(parts[1]);
-//            Installments.percentages.add(pct);
+            Installments.addPercentages(pct);
             
         }
         installmentScanner.close();
         
-//        System.out.printf("%d installments of payment\n",Installments.getTotalInstallments());
-//        for (int i = 0 ; i < Installments.getTotalInstallments() ; i++) {
-//            System.out.printf("  (%d)  %2.1f % of total\n", i + 1, Installments.percentages.get(i));
-//        }
-//        System.out.printf("  (%d)  remaining total\n",Installments.getTotalInstallments());
+        System.out.printf("%d installments of payment\n",Installments.getTotalInstallments());
+        for (int i = 0 ; i < Installments.getTotalInstallments() -1 ; i++) {
+            System.out.printf("  (%d)  %2.1f %% of total\n", i + 1 , Installments.getPercentages(i));
+        }
+        System.out.printf("  (%d)  remaining total\n",Installments.getTotalInstallments());
         
         
         
         System.out.println();
-        Scanner bookScanner = readFile("bookings.txt");
-        System.out.println();
-        System.out.println("===== Booking Processing =====");
+        Scanner bookScanner = readFile("bookings_errors.txt");
+//        System.out.println();
+        
         
         ArrayList<Customer> customers = new ArrayList<>();
         ArrayList<Booking> bookings = new ArrayList<>();
         while (bookScanner.hasNextLine()) {
             String line = bookScanner.nextLine();
             String value[] = line.split(",");
+            
             value = helper.cleanArray(value, 0, 5);
+            
+            Tour tour = new GroupTour(value[2]);
+            int tourIndex = GTs.indexOf(tour);
+            try {
+                if (tourIndex == -1) {
+                    tour = new HolidayPackage(value[2]);
+                    tourIndex = HPs.indexOf(tour);
+                    if (tourIndex == -1) {
+                        throw new InvalidInputException(value[2]);
+                    }
+                    tour = HPs.get(tourIndex);
+                }else{
+                    tour = GTs.get(tourIndex);
+                }
+            }catch(InvalidInputException e){
+                System.out.printf("%s\n",e);
+                System.out.printf("%-34s--> skip this booking\n\n", line);
+                continue;
+            }
             
             Customer customer = new Customer(value[1]);
             int targetIndex = customers.indexOf(customer);
@@ -115,25 +155,42 @@ public class main {
             }else{
                 customer = customers.get(targetIndex);
             }
-            
-            Booking booking = new Booking(value[0],value[1],value[2],helper.INT(value[3]),helper.INT(value[4]));
-            bookings.add(booking);
-            System.out.printf("Booking  %s, customer  %s, current cashback = %.2f\n", value[0],value[1],customer.getCashback());
-            System.out.printf("             program  %s, %d persons (%d single + %d double rooms)\n", value[2], booking.getTotalPeople(), booking.getSingleRequest(), booking.getDoubleRooms());
-            int tourIndex = GTs.indexOf(value[2]);
-            System.out.printf("%s\n",GTs.toString());
-            Tour tour;
-            if (tourIndex == -1) {
-                tourIndex = HPs.indexOf(value[2]);
-                tour = HPs.get(tourIndex);
-            }else{
-                tour = GTs.get(tourIndex);
+            try {
+                if (helper.INT(value[3]) < 0) {
+                    throw new InvalidInputException(helper.INT(value[3]),4);
+                }else if(helper.INT(value[4]) < 0){
+                    throw new InvalidInputException(helper.INT(value[4]),5);
+                }
+            }catch(InvalidInputException e) {
+                System.out.printf("%s\n", e);
+                System.out.printf("%-34s--> skip this booking\n\n", line);
+                continue;
+            }catch(NumberFormatException e){
+                System.out.printf("%s\n", e);
+                System.out.printf("%-34s--> skip this booking\n\n", line);
+                continue;
+            }catch(ArrayIndexOutOfBoundsException e){
+                System.out.printf("%s\n", e);
+                System.out.printf("%-34s--> skip this booking\n\n", line);
+                continue;
             }
-            double TotalPayment = tour.calculatePayment(booking.getTotalPeople(),booking.getSingleRequest());
-            Installments.processAndPrintInstallments(TotalPayment,customer.getCashback());
-            System.out.println();
+            Booking booking = new Booking(value[0],customer,value[2],helper.INT(value[3]),helper.INT(value[4]));
+            
+            
+            
+//            System.out.printf("%s\n",GTs.toString());
+            
+            bookings.add(booking);
+            booking.setTourObject(tour);
+            
+//            System.out.println();
         }
         bookScanner.close();
+        
+        System.out.println("===== Booking Processing =====");
+        for (Booking booking : bookings) {
+            booking.printBookingData();
+        }
         
         
         System.out.println("===== Group-Tour Sumary =====");

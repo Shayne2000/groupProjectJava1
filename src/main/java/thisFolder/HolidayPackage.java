@@ -27,8 +27,8 @@ public class HolidayPackage extends Tour {
     }
 
     @Override
-    public double calculatePayment(int singles, int doubles) {
-        return singles * singleRate + 2.0 * doubles * doubleRate;
+    public double calculatePayment(int totalPeople, int singleRequest) {
+        return singleRequest * singleRate + (totalPeople-singleRequest) * doubleRate;
     }
     
     public double getSingleRate () {

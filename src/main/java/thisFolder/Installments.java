@@ -58,18 +58,19 @@ public class Installments {
     public static double processAndPrintInstallments(double totalPayment, double currentCashback) {
         int totalInstallments = getTotalInstallments();
         double sumPreviousInstallments = 0.0;
+        
 
         for (int i = 0; i < percentages.size(); i++) {
             double installmentAmount = totalPayment * (percentages.get(i) / 100.0);
             sumPreviousInstallments += installmentAmount;
-            System.out.printf("    installment %d   = %,13.2f\n", (i + 1), installmentAmount);
+            System.out.printf("               installment %d   = %,13.2f\n", (i + 1), installmentAmount);
         }
 
         double rawLastInstallment = totalPayment - sumPreviousInstallments;
         double usedCashback = Math.min(currentCashback, rawLastInstallment);
         double finalLastInstallment = rawLastInstallment - usedCashback;
 
-        System.out.printf("    installment %d   = %,13.2f  -current cashback (%,10.2f) = %,13.2f\n",
+        System.out.printf("               installment %d   = %,13.2f  -current cashback (%,10.2f) = %,13.2f\n\n",
                 totalInstallments, rawLastInstallment, currentCashback, finalLastInstallment);
 
         return usedCashback;

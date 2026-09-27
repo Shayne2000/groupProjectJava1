@@ -15,18 +15,18 @@ package thisFolder;
 public class Customer {
     
     private final String ID;
-    private float cashback;
+    private double cashback;
     
     Customer(String id) {
         ID = id;
         cashback = 0;
     }
     
-    public float getCashback () {
+    public double getCashback () {
         return cashback;
     }
     
-    public void setCashback (int newCashBack) {
+    public void setCashback (double newCashBack) {
         cashback = newCashBack;
     }
     
