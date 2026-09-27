@@ -50,6 +50,10 @@ public class Installments {
     public static List<Double> getPercentages() {
         return percentages;
     }
+    
+    public static void addPercentages (double pct) {
+        percentages.add(pct);
+    }
 
     public static double processAndPrintInstallments(double totalPayment, double currentCashback) {
         int totalInstallments = getTotalInstallments();
