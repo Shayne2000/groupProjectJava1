@@ -37,6 +37,6 @@ class Booking {
     public String getTourID() {return tourID;}
     public int getTotalPeople() {return totalPeople;}
     public int getSingleRequest() {return singleRequest;}
-    
+    public int getDoubleRooms() {return (totalPeople-singleRequest)/2;}
 }
 
