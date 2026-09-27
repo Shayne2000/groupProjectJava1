@@ -47,8 +47,8 @@ public class Installments {
         return percentages.size() + 1;
     }
 
-    public static List<Double> getPercentages() {
-        return percentages;
+    public static double getPercentages(int index) {
+        return percentages.get(index);
     }
     
     public static void addPercentages (double pct) {
