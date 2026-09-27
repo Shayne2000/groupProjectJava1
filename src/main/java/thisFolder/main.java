@@ -104,16 +104,10 @@ public class main {
             
             double pct = Double.parseDouble(parts[1]);
             Installments.addPercentages(pct);
-            
         }
         installmentScanner.close();
         
-        System.out.printf("%d installments of payment\n",Installments.getTotalInstallments());
-        for (int i = 0 ; i < Installments.getTotalInstallments() -1 ; i++) {
-            System.out.printf("  (%d)  %2.1f %% of total\n", i + 1 , Installments.getPercentages(i));
-        }
-        System.out.printf("  (%d)  remaining total\n",Installments.getTotalInstallments());
-        
+        Installments.printInstallmentInfo();
         
         
         System.out.println();

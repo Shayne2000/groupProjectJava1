@@ -7,33 +7,33 @@ import java.util.*;
 public class Installments {
     private static List<Double> percentages = new ArrayList<>();
 
-    public static void readFromFile(String filePath) throws FileNotFoundException {
-        File file = new File(filePath);
-        Scanner scanner = new Scanner(file);
+//    public static void readFromFile(String filePath) throws FileNotFoundException {
+//        File file = new File(filePath);
+//        Scanner scanner = new Scanner(file);
+//
+//        percentages.clear();
+//
+//        while (scanner.hasNextLine()) {
+//            String line = scanner.nextLine().trim();
+//
+//            if (line.isEmpty() || line.startsWith("#")) {
+//                continue;
+//            }
+//
+//            String[] parts = line.split(",");
+//            if (parts.length >= 2) {
+//                try {
+//                    double pct = Double.parseDouble(parts[1].trim());
+//                    percentages.add(pct);
+//                } catch (NumberFormatException e) {
+//                }
+//            }
+//        }
+//        scanner.close();
+//    }
 
-        percentages.clear();
-
-        while (scanner.hasNextLine()) {
-            String line = scanner.nextLine().trim();
-
-            if (line.isEmpty() || line.startsWith("#")) {
-                continue;
-            }
-
-            String[] parts = line.split(",");
-            if (parts.length >= 2) {
-                try {
-                    double pct = Double.parseDouble(parts[1].trim());
-                    percentages.add(pct);
-                } catch (NumberFormatException e) {
-                }
-            }
-        }
-        scanner.close();
-    }
-
-    public void printInstallmentInfo(String filePath) {
-        System.out.println("Read from " + filePath);
+    public static void printInstallmentInfo() {
+//        System.out.println("Read from " + filePath);
         int totalInstallments = getTotalInstallments();
         System.out.println(totalInstallments + " installments of payment");
 
