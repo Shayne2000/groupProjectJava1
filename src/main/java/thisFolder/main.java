@@ -136,27 +136,13 @@ public class main {
                 }else{
                     tour = GTs.get(tourIndex);
                 }
-            }catch(InvalidInputException e){
-                System.out.printf("%s\n",e);
-                System.out.printf("%-34s--> skip this booking\n\n", line);
-                continue;
-            }
-            
-            Customer customer = new Customer(value[1]);
-            int targetIndex = customers.indexOf(customer);
-            if (targetIndex == -1) {
-                customers.add(customer);
-            }else{
-                customer = customers.get(targetIndex);
-            }
-            try {
                 if (helper.INT(value[3]) < 0) {
                     throw new InvalidInputException(helper.INT(value[3]),4);
                 }else if(helper.INT(value[4]) < 0){
                     throw new InvalidInputException(helper.INT(value[4]),5);
                 }
-            }catch(InvalidInputException e) {
-                System.out.printf("%s\n", e);
+            }catch(InvalidInputException e){
+                System.out.printf("%s\n",e);
                 System.out.printf("%-34s--> skip this booking\n\n", line);
                 continue;
             }catch(NumberFormatException e){
@@ -168,6 +154,16 @@ public class main {
                 System.out.printf("%-34s--> skip this booking\n\n", line);
                 continue;
             }
+            
+            Customer customer = new Customer(value[1]);
+            int targetIndex = customers.indexOf(customer);
+            if (targetIndex == -1) {
+                customers.add(customer);
+            }else{
+                customer = customers.get(targetIndex);
+            }
+            
+            
             Booking booking = new Booking(value[0],customer,value[2],helper.INT(value[3]),helper.INT(value[4]));
             
             
